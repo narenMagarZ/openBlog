@@ -4,7 +4,7 @@ export interface EditorInterface {
 }
 
 export interface EditorEngineModuleReturnInterface {
-  cursorPosition: number;
+  cursorPosition: { start: number; end: number; };
   content: string;
 }
 
