@@ -15,8 +15,8 @@ export function Tag({tags, setTags}: {tags: TagInterface[], setTags: React.Dispa
     }
   }
   return (
-    <div className="bg-[#f5f5f5] rounded p-2 flex gap-2 items-center flex-wrap">
-      <div className="flex flex-wrap items-center gap-2 ">
+    <div className="bg-[#f5f5f5] rounded flex gap-2 items-center flex-wrap">
+      <div className="flex flex-wrap items-center gap-2">
         {
           tags.map(({label}, index ) => (
             <button className="border bg-[#e5e5e5] rounded text-xs px-2 py-1" key={index} >#{label}</button>

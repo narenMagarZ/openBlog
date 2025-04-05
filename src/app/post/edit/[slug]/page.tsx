@@ -11,7 +11,7 @@ export default function Page() {
     <div className="flex items-center justify-center" >
       <div className="w-full flex items-center justify-center max-w-[600px] flex-col gap-2">
         <div className="w-full">
-          <Editor style="w-full bg-[#f5f5f5] h-200 resize-none rounded p-2" slug="" /> 
+          <Editor style="w-full bg-[#f5f5f5] h-180 resize-none rounded p-2" slug="" /> 
         </div>
       </div>
     </div>
