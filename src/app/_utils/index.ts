@@ -8,15 +8,12 @@ class Utils {
   }
 
   public slugify(label: string): string {
-    label.replace(/\S/, "-");
     return label.trim().split(" ").join("-");
   }
 
   public determineReadTime(content: string): number {
     return 0;
   }
-
-
 
 }
 

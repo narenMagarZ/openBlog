@@ -16,9 +16,8 @@ export async function getPosts(): Promise<PostInterface[]> {
       blogList.push(childSnapshot.val());
     });
     return blogList;
-  } catch (error) {
-    console.error(error);
-    throw new Error("");
+  } catch (error: any) {
+    throw new Error(`Failed to fetch posts: ${error.message}`);
   }
 }
 
@@ -38,9 +37,7 @@ export async function createPost({title, author, tags, content}: Partial<InputPo
       content: content,
       status: PostEnum.draft
     });
-    console.log('successfully saved')
-  } catch (error) {
-    console.error(error);
-    throw new Error("");
+  } catch (error: any) {
+    throw new Error(`Failed to create post: ${error.message}`);
   }
 }
