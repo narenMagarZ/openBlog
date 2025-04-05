@@ -5,6 +5,6 @@ interface ButtonInterface {
 }
 export function Button({label, style}: ButtonInterface){
   return (
-    <button className={style} >{label}</button>
+    <button className={style}>{label}</button>
   )
 }
