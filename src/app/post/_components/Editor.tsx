@@ -44,7 +44,7 @@ export function Editor({style}: EditorInterface) {
       textarea.focus();
       setTimeout(()=> {
         textarea.setSelectionRange(cursorPosition.start, cursorPosition.end);
-      });
+      }, 0);
     }
   }
 
