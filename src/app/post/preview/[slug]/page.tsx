@@ -1,8 +1,8 @@
 
 export default function Page() {
   return (
-    <div>
-      
+    <div className="text-white">
+      page white
     </div>
   )
 }
