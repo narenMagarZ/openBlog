@@ -1,14 +1,14 @@
 import { EditorEngineModuleEnum } from "@/app/enums/editorEnum";
 import { EditorEngineDelegator } from "@/app/editorEngine";
+import { EditorEngineModuleReturnInterface } from "@/app/interfaces";
 
 interface ActionInterface {
-  currentCursorPosition: number;
+  currentCursorPosition: {start: number; end: number;};
   content: string;
-  newCursorPosition?: number;
-  setContent: (content: string) => void;
+  updateEditorData: (params: EditorEngineModuleReturnInterface) => void;
 }
 
-export function Action({ currentCursorPosition, content, setContent}: ActionInterface) {
+export function Action({ currentCursorPosition, content, updateEditorData}: ActionInterface) {
   const engineModules: EditorEngineModuleEnum[] = [
     EditorEngineModuleEnum.bold, 
     EditorEngineModuleEnum.italic, 
@@ -23,10 +23,9 @@ export function Action({ currentCursorPosition, content, setContent}: ActionInte
   function handleActionClick(module: EditorEngineModuleEnum) {
     const engine = new EditorEngineDelegator(module);
     const { cursorPosition, content: updatedContent } = engine.edit({cursorPosition: currentCursorPosition, content: content});
-    setContent(updatedContent);
-    currentCursorPosition = cursorPosition;
+    updateEditorData({cursorPosition: cursorPosition, content: updatedContent});
   }
-  
+
   return (
     <div className="">
       <div className="flex text-xs items-center gap-2 rounded bg-[#e5e5e5] p-2">
