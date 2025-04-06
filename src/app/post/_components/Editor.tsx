@@ -7,6 +7,8 @@ import { Utils } from "@/app/_utils";
 import { Tag } from "./Tag";
 import { createPost } from "@/app/action";
 import { Action } from "./Action";
+import { ParserEngine } from "@/app/parserEngine";
+import { ParserTaskContextInterface } from "@/app/parserEngine/parserTaskContextInterface";
 
 export function Editor({style}: EditorInterface) {
   const [title, setTitle] = useState<string>("untitled");
@@ -32,6 +34,10 @@ export function Editor({style}: EditorInterface) {
   }
 
   async function handleSaveOrPublishPost() {
+    const parserEngine = new ParserEngine()
+    parserEngine.registerTasks();
+    const parserTaskContext = new ParserTaskContextInterface(content);
+    const result = parserEngine.executeTasks("1", parserTaskContext);
     // current pos of cursor, content, editor engine => new content, new position of cursor
     // await createPost({title: title, author: {name: "naren", isAnonymous: false}, tags: tags, content})
   }
