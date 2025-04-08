@@ -5,6 +5,8 @@ import { DbRef } from "@/app/config";
 import { InputPostInterface, PostInterface } from "@/app/interfaces";
 import { Utils } from "@/app/_utils";
 import { PostEnum } from "./enums";
+import { ParserEngine } from "./parserEngine";
+import { ParserTaskContextInterface } from "./parserEngine/parserTaskContextInterface";
 
 export async function getPosts(): Promise<PostInterface[]> {
   const fetchQuery = query(DbRef.refs)
@@ -21,11 +23,17 @@ export async function getPosts(): Promise<PostInterface[]> {
   }
 }
 
-export async function createPost({title, author, tags, content}: Partial<InputPostInterface>): Promise<void> {
+export async function createPost({title, author, tags, content }: Partial<InputPostInterface>): Promise<void> {
   const newPostRef = push(DbRef.refs);
-  const createdAt = Date.now() // maintain utc date
+  const createdAt = new Date(Date.now()) // maintain utc date
+  const slug = Utils.slugify(title!);
+
+  const parserEngine = new ParserEngine();
+  parserEngine.registerTasks();
+  const parserTaskContext = new ParserTaskContextInterface(content!);
+  const result = parserEngine.executeTasks("1", parserTaskContext);
+
   try {
-    const slug = Utils.slugify(title!);
     await set(newPostRef, {
       id: 1,
       title: title,
@@ -34,8 +42,8 @@ export async function createPost({title, author, tags, content}: Partial<InputPo
       createdAt: createdAt,
       updatedAt: createdAt,
       tags: tags,
-      content: content,
-      status: PostEnum.draft
+      content: result.content,
+      status: PostEnum.draft,
     });
   } catch (error: any) {
     throw new Error(`Failed to create post: ${error.message}`);

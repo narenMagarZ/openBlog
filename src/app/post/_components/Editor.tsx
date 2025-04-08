@@ -9,6 +9,7 @@ import { createPost } from "@/app/action";
 import { Action } from "./Action";
 import { ParserEngine } from "@/app/parserEngine";
 import { ParserTaskContextInterface } from "@/app/parserEngine/parserTaskContextInterface";
+import { PostEnum } from "@/app/enums";
 
 export function Editor({style}: EditorInterface) {
   const [title, setTitle] = useState<string>("untitled");
@@ -33,13 +34,18 @@ export function Editor({style}: EditorInterface) {
     setCursorPosition({start: e.currentTarget.selectionStart, end: e.currentTarget.selectionEnd});
   }
 
-  async function handleSaveOrPublishPost() {
-    const parserEngine = new ParserEngine()
-    parserEngine.registerTasks();
-    const parserTaskContext = new ParserTaskContextInterface(content);
-    const result = parserEngine.executeTasks("1", parserTaskContext);
-    // current pos of cursor, content, editor engine => new content, new position of cursor
-    // await createPost({title: title, author: {name: "naren", isAnonymous: false}, tags: tags, content})
+  async function handleCreatePost() {
+    await createPost({
+      title: title, 
+      author: {name: "naren", isAnonymous: false}, 
+      tags: tags, 
+      content: content, 
+      slug: slug,
+      totalViewCount: 0,
+      status: PostEnum.draft,
+      meta: {},
+      readTime: 0,
+    });
   }
 
   function updateEditorData({cursorPosition, content}: EditorEngineModuleReturnInterface): void {
@@ -73,7 +79,7 @@ export function Editor({style}: EditorInterface) {
         ref={textareaRef} value={content} placeholder="Write post content here..." onChange={handleContentChange} className={`${style} focus:outline-none font-medium`}></textarea>
       </div>
       <div className="flex items-center gap-2 justify-end">
-        <button onClick={handleSaveOrPublishPost} className="bg-[#f5f5f5] px-4 py-2 rounded text-xs cursor-pointer">Save</button>
+        <button onClick={handleCreatePost} className="bg-[#f5f5f5] px-4 py-2 rounded text-xs cursor-pointer">Save</button>
         <Link href={`/post/preview/${slug}`} className="bg-[#f5f5f5] rounded px-4 py-2 text-xs" >Preview</Link>
       </div>
     </div>
