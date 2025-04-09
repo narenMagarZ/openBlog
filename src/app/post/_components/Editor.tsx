@@ -7,9 +7,7 @@ import { Utils } from "@/app/_utils";
 import { Tag } from "./Tag";
 import { createPost } from "@/app/action";
 import { Action } from "./Action";
-import { ParserEngine } from "@/app/parserEngine";
-import { ParserTaskContextInterface } from "@/app/parserEngine/parserTaskContextInterface";
-import { PostEnum } from "@/app/enums";
+import { PostStatusEnum } from "@/app/enums";
 
 export function Editor({style}: EditorInterface) {
   const [title, setTitle] = useState<string>("untitled");
@@ -42,7 +40,7 @@ export function Editor({style}: EditorInterface) {
       content: content, 
       slug: slug,
       totalViewCount: 0,
-      status: PostEnum.draft,
+      status: PostStatusEnum.draft,
       meta: {},
       readTime: 0,
     });

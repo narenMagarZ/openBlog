@@ -4,12 +4,12 @@ import { set, push, query, get } from "firebase/database";
 import { DbRef } from "@/app/config";
 import { InputPostInterface, PostInterface } from "@/app/interfaces";
 import { Utils } from "@/app/_utils";
-import { PostEnum } from "./enums";
+import { PostStatusEnum } from "./enums";
 import { ParserEngine } from "./parserEngine";
 import { ParserTaskContextInterface } from "./parserEngine/parserTaskContextInterface";
 
 export async function getPosts(): Promise<PostInterface[]> {
-  const fetchQuery = query(DbRef.refs)
+  const fetchQuery = query(DbRef.posts)
   const blogList : PostInterface[] = [];
   try {
     const snapshot = await get(fetchQuery)
@@ -24,7 +24,7 @@ export async function getPosts(): Promise<PostInterface[]> {
 }
 
 export async function createPost({title, author, tags, content }: Partial<InputPostInterface>): Promise<void> {
-  const newPostRef = push(DbRef.refs);
+  const newPostRef = push(DbRef.posts);
   const createdAt = new Date(Date.now()) // maintain utc date
   const slug = Utils.slugify(title!);
 
@@ -33,9 +33,10 @@ export async function createPost({title, author, tags, content }: Partial<InputP
   const parserTaskContext = new ParserTaskContextInterface(content!);
   const result = parserEngine.executeTasks("1", parserTaskContext);
 
+  const lastPostCount = 1;
   try {
     await set(newPostRef, {
-      id: 1,
+      id: lastPostCount,
       title: title,
       slug: slug,
       author: author,
@@ -43,7 +44,7 @@ export async function createPost({title, author, tags, content }: Partial<InputP
       updatedAt: createdAt,
       tags: tags,
       content: result.content,
-      status: PostEnum.draft,
+      status: PostStatusEnum.draft,
     });
   } catch (error: any) {
     throw new Error(`Failed to create post: ${error.message}`);
