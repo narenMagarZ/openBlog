@@ -15,6 +15,11 @@ class Utils {
     return 0;
   }
 
+  public generateId() {
+    const random = Math.random();
+    return random;
+  }
+
 }
 
 const utils = Utils.get();

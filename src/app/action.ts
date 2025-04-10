@@ -17,15 +17,20 @@ export async function createPost({title, author, tags, content }: Partial<InputP
   const createdAt = new Date(Date.now()), // utc date
   slug = Utils.slugify(title!);
 
-  const parserEngine = new ParserEngine();
+  const parserEngine = new ParserEngine(),
+  parserTaskContext = new ParserTaskContextInterface(content!);
+
   parserEngine.registerTasks();
-  const parserTaskContext = new ParserTaskContextInterface(content!),
-  result = parserEngine.executeTasks("1", parserTaskContext);
+
+  const logId = Utils.generateId(),
+  result = parserEngine.executeTasks(String(logId), parserTaskContext);
 
   const db = FirebaseServiceFactory.create(firebaseServiceTypeEnum.firestore, app),
-  lastPostCounter = await db.getPostCounter();
+  lastPostCounter = await db.getPostCounter(),
+  newPostCounter = lastPostCounter + 1;
+  
   await db.write({
-    id: lastPostCounter.toString(),
+    id: String(newPostCounter),
     title: title,
     author: author,
     tags: tags,
