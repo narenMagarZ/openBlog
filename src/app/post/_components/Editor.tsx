@@ -39,10 +39,7 @@ export function Editor({style}: EditorInterface) {
       tags: tags, 
       content: content, 
       slug: slug,
-      totalViewCount: 0,
-      status: PostStatusEnum.draft,
       meta: {},
-      readTime: 0,
     });
   }
 

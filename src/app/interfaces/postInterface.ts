@@ -1,4 +1,4 @@
-import { PostEnum } from "@/app/enums";
+import { PostStatusEnum } from "@/app/enums";
 import { AuthorInterface } from "./authorInterface";
 import { TagInterface } from "./tagInterface";
 
@@ -10,7 +10,7 @@ export interface PostInterface {
   content: string;
   createdAt: Date;
   updatedAt: Date;
-  status: PostEnum;
+  status: PostStatusEnum;
   slug: string;
   readTime: number;
   totalViewCount: number;

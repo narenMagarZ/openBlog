@@ -1,6 +1,6 @@
 import { DatabaseReference, ref } from "firebase/database";
 import { } from "firebase/firestore";
-import { db, firestoreDb } from "@/app/config";
+import { db } from "@/app/config";
 
 class DbRef {
   private static instance: DbRef;
